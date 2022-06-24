@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "transactions")
 @Table(name = "transactions")
 public class TransactionDao {
     @Id
@@ -27,6 +27,9 @@ public class TransactionDao {
     private int operationTypeId;
 
     private double amount;
+
+    private double balanceAmount;
+
 
     @Column(name = "created_on")
     private LocalDateTime createdOn;

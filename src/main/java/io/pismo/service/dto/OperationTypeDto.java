@@ -15,4 +15,8 @@ public class OperationTypeDto {
     private int operationTypeId;
     private String description;
     private int operationValue;
+
+    public boolean isCreditTransaction(){
+        return operationTypeId == 4;
+    }
 }

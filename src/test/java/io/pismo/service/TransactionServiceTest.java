@@ -23,6 +23,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -87,6 +89,32 @@ public class TransactionServiceTest {
     public void transactionNotFoundTest(){
         Mockito.when(transactionRepository.findByTransactionId(Mockito.eq(1L))).thenReturn(Optional.empty());
         transactionService.getTransaction(1l);
+    }
+
+    @Test
+    public void processSettlementsTest(){
+        List<TransactionDao> transactionDaoList = new ArrayList<>();
+        transactionDaoList.add(getTransactionDao(1,-50.0));
+        transactionDaoList.add(getTransactionDao(2,-23.5));
+        transactionDaoList.add(getTransactionDao(3,-18.7));
+       double remainingCreditAmount =  transactionService.processSettlements(transactionDaoList,60);
+        transactionDaoList.forEach(transactionDao -> {
+            System.out.println(transactionDao.getAmount() + " _ " +transactionDao.getBalanceAmount());
+        });
+        System.out.println(remainingCreditAmount);
+
+        System.out.println("-----------------------------");
+         remainingCreditAmount =  transactionService.processSettlements(transactionDaoList,100);
+        transactionDaoList.forEach(transactionDao -> {
+            System.out.println(transactionDao.getAmount() + " _ " +transactionDao.getBalanceAmount());
+        });
+        System.out.println(remainingCreditAmount);
+
+
+    }
+
+    private TransactionDao getTransactionDao(long id,double amount){
+        return TransactionDao.builder().balanceAmount(amount).amount(amount).transactionId(id).build();
     }
 
 
